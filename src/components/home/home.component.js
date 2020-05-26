@@ -1,7 +1,6 @@
 import React from "react";
-import { Container, Col, Row } from "react-bootstrap";
+import { Container, Col, Row, Button } from "react-bootstrap";
 import Rater from "react-rater";
-import { Link } from "react-router-dom";
 import { getHome } from "../../service/home.service";
 
 import "./home.css";
@@ -53,11 +52,31 @@ class Home extends React.Component {
                 </h5>
                 <h5>{this.state.home.year}</h5>
                 <h5>{this.state.home.type}</h5>
-                <Rater total={5} rating={this.state.home.locationRating} />
+                <Rater
+                  total={5}
+                  rating={this.state.home.locationRating}
+                  interactive={false}
+                />
                 <br />
-                <Rater total={5} rating={this.state.home.priceRating} />
+                <Rater
+                  total={5}
+                  rating={this.state.home.priceRating}
+                  interactive={false}
+                />
                 <br />
-                <Rater total={5} rating={this.state.home.rating} />
+                <Rater
+                  total={5}
+                  rating={this.state.home.rating}
+                  interactive={false}
+                />
+                <br />
+                <Button
+                  variant="warning"
+                  href={`/home/edit/${this.state.home._id}`}
+                >
+                  Edit
+                </Button>{" "}
+                <Button variant="danger">Delete</Button>
               </Col>
             </Row>
           </Container>

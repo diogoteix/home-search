@@ -6,6 +6,7 @@ import "react-rater/lib/react-rater.css";
 import HomeList from "./components/home-list.component";
 import Header from "./components/header.component";
 import Home from "./components/home/home.component";
+import HomeEdit from "./components/home/home-edit.component";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
 
         <div className="AppContent">
           <Switch>
+            <Route path="/home/edit/:id" component={HomeEdit} />
             <Route path="/home/:id" component={Home} />
             <Route path="/" component={HomeList} />
           </Switch>
