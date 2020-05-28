@@ -187,9 +187,13 @@ class HomeEdit extends React.Component {
                       onChange={this.changeHandler}
                     >
                       <option>T1</option>
+                      <option>T1+1</option>
                       <option>T2</option>
+                      <option>T2+1</option>
                       <option>T3</option>
+                      <option>T3+1</option>
                       <option>T4</option>
+                      <option>T4+1</option>
                     </Form.Control>
                   </Form.Group>
                   <Form.Group>

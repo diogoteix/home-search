@@ -19,8 +19,9 @@ class Home extends React.Component {
   }
 
   render() {
-    const price = this.state.home?.price[this.state.home.price.length - 1]
-      .value;
+    const price = this.state.home?.price
+      ? this.state.home?.price[this.state.home?.price?.length - 1].value
+      : 0;
     const priceArea = price / this.state.home?.area;
     return (
       <div>
@@ -42,6 +43,9 @@ class Home extends React.Component {
                     currency: "EUR",
                   })}
                 </h5>
+                {this.state.home?.price?.map((p) => (
+                  <p>{p.value}</p>
+                ))}
                 <h5>{this.state.home.area}m2</h5>
                 <h5>
                   {priceArea.toLocaleString("pt-PT", {
