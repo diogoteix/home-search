@@ -16,6 +16,7 @@ function App() {
 
         <div className="AppContent">
           <Switch>
+            <Route path="/home/new" component={HomeEdit} />
             <Route path="/home/edit/:id" component={HomeEdit} />
             <Route path="/home/:id" component={Home} />
             <Route path="/" component={HomeList} />

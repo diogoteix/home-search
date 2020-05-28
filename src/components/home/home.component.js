@@ -51,6 +51,7 @@ class Home extends React.Component {
                   /m2
                 </h5>
                 <h5>{this.state.home.year}</h5>
+                <h5>{this.state.home.location}</h5>
                 <h5>{this.state.home.type}</h5>
                 <Rater
                   total={5}
@@ -74,9 +75,9 @@ class Home extends React.Component {
                   variant="warning"
                   href={`/home/edit/${this.state.home._id}`}
                 >
-                  Edit
+                  Editar
                 </Button>{" "}
-                <Button variant="danger">Delete</Button>
+                <Button variant="danger">Eliminar</Button>
               </Col>
             </Row>
           </Container>

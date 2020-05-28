@@ -41,3 +41,27 @@
 .react-rater-star.is-active-half::before {
   color: gold !important;
 }
+
+@media (min-width: 992px) {
+  .my-modal-lg {
+    width: auto !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .my-modal-dialog {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .my-modal-content {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    height: auto !important;
+    min-height: 100% !important;
+    border-radius: 0;
+  }
+}

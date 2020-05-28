@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Col, Row, Button, Form } from "react-bootstrap";
 import Rater from "react-rater";
 import { Link } from "react-router-dom";
-import { getHome } from "../../service/home.service";
+import { getHome, updateHome, createHome } from "../../service/home.service";
 
 import "./home.css";
 
@@ -14,9 +14,34 @@ class HomeEdit extends React.Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    getHome(id).then((data) => {
-      this.setState({ home: data, id });
-    });
+    if (id) {
+      getHome(id).then((data) => {
+        this.setState({
+          home: { ...data, price: [...data.price, { value: 0 }] },
+          id,
+        });
+      });
+    } else {
+      this.setState({
+        home: {
+          url: "",
+          description: "",
+          location: "",
+          area: 0,
+          year: 0,
+          type: "",
+          locationRating: 0,
+          priceRating: 0,
+          rating: 0,
+          price: [
+            {
+              value: 0,
+            },
+          ],
+        },
+        id: null,
+      });
+    }
   }
 
   changeHandler = (event) => {
@@ -33,10 +58,37 @@ class HomeEdit extends React.Component {
     console.log(this.state);
   };
 
+  updatePrice = (event) => {
+    const value = event.target.value;
+
+    const prices = this.state.home.price;
+    prices[this.state.home.price.length - 1] = { value };
+
+    this.setState({
+      home: {
+        ...this.state.home,
+        price: prices,
+      },
+    });
+
+    console.log(this.state);
+  };
+
+  submit(id, home) {
+    if (id) {
+      updateHome(id, home).then((data) => {
+        window.location = `/home/${id}`;
+      });
+    } else {
+      createHome(home).then((data) => {
+        window.location = `/home/${data._id}`;
+      });
+    }
+  }
+
   render() {
     const price = this.state.home?.price[this.state.home.price.length - 1]
       .value;
-    const priceArea = price / this.state.home?.area;
     return (
       <div>
         {this.state.home && (
@@ -62,7 +114,7 @@ class HomeEdit extends React.Component {
                     />
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Description</Form.Label>
+                    <Form.Label>Descrição</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="Enter description"
@@ -72,23 +124,38 @@ class HomeEdit extends React.Component {
                     />
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Location</Form.Label>
+                    <Form.Label>Localização</Form.Label>
                     <Form.Control
-                      type="text"
-                      placeholder="Enter location"
+                      as="select"
                       name="location"
                       value={this.state.home.location}
                       onChange={this.changeHandler}
-                    />
+                    >
+                      <option>Arcozelo</option>
+                      <option>Avintes</option>
+                      <option>Canelas</option>
+                      <option>Canidelo</option>
+                      <option>Girjó e Sermonde</option>
+                      <option>Gulpilhares e Valadares</option>
+                      <option>Madalena</option>
+                      <option>Mafamude e Vilar do Paraíso</option>
+                      <option>Oliveira do Douro</option>
+                      <option>Pedroso e Seixezelo</option>
+                      <option>Sandim, Olival, Lever e Crestuma</option>
+                      <option>Santa Marinha e São Pedro da Afurada</option>
+                      <option>Serzedo e Perosinho</option>
+                      <option>São Felix da Marinha</option>
+                      <option>Vilar de Andorinho</option>
+                    </Form.Control>
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Price</Form.Label>
+                    <Form.Label>Preço</Form.Label>
                     <Form.Control
                       type="number"
                       placeholder="Enter price"
                       name="price"
-                      value={this.state.home.price}
-                      onChange={this.changeHandler}
+                      value={price}
+                      onChange={this.updatePrice}
                     />
                   </Form.Group>
                   <Form.Group>
@@ -102,7 +169,7 @@ class HomeEdit extends React.Component {
                     />
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Year</Form.Label>
+                    <Form.Label>Ano</Form.Label>
                     <Form.Control
                       type="number"
                       placeholder="Enter year"
@@ -112,7 +179,7 @@ class HomeEdit extends React.Component {
                     />
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Tipology</Form.Label>
+                    <Form.Label>Tipologia</Form.Label>
                     <Form.Control
                       as="select"
                       name="type"
@@ -126,7 +193,7 @@ class HomeEdit extends React.Component {
                     </Form.Control>
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Location Rating</Form.Label>
+                    <Form.Label>Rating Localização</Form.Label>
                     <Rater
                       total={5}
                       rating={this.state.home.locationRating}
@@ -138,7 +205,7 @@ class HomeEdit extends React.Component {
                     />
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Price Rating</Form.Label>
+                    <Form.Label>Rating Preço</Form.Label>
                     <Rater
                       total={5}
                       rating={this.state.home.priceRating}
@@ -161,49 +228,16 @@ class HomeEdit extends React.Component {
                       }
                     />
                   </Form.Group>
-                  <Button variant="primary" type="submit">
-                    Submit
-                  </Button>
                 </Form>
-                <h5>{this.state.home.description}</h5>
-                <h5>
-                  {price.toLocaleString("pt-PT", {
-                    style: "currency",
-                    currency: "EUR",
-                  })}
-                </h5>
-                <h5>{this.state.home.area}m2</h5>
-                <h5>
-                  {priceArea.toLocaleString("pt-PT", {
-                    style: "currency",
-                    currency: "EUR",
-                  })}
-                  /m2
-                </h5>
-                <h5>{this.state.home.year}</h5>
-                <h5>{this.state.home.type}</h5>
-                <Rater
-                  total={5}
-                  rating={this.state.home.locationRating}
-                  interactive={false}
-                />
-                <br />
-                <Rater
-                  total={5}
-                  rating={this.state.home.priceRating}
-                  interactive={false}
-                />
-                <br />
-                <Rater
-                  total={5}
-                  rating={this.state.home.rating}
-                  interactive={false}
-                />
-                <br />
                 <Button variant="warning" href={`/home/${this.state.home._id}`}>
-                  Discard
+                  Descartar
                 </Button>{" "}
-                <Button variant="success">Confirm</Button>
+                <Button
+                  variant="success"
+                  onClick={() => this.submit(this.state.id, this.state.home)}
+                >
+                  Confirmar
+                </Button>
               </Col>
             </Row>
           </Container>
